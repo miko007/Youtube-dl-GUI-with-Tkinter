@@ -12,9 +12,10 @@ class MainMenu(Menu):
 	def setup(self):
 		self.file = Menu(self, tearoff=0)
 		self.add_cascade(label="YouTube-DL", menu=self.file)
-		self.file.add_command(label="Speicherort wählen...", command=self.open)
+		self.file.add_command(label="Select download folder...", command=self.open)
+		self.file.add_command(label="About...", command=self.root.root.about)
 		self.file.add_separator()
-		self.file.add_command(label="Beenden", command=self.master.destroy)
+		self.file.add_command(label="Quit", command=self.master.destroy)
 
 	def open(self):
 		dir = tkFileDialog.askdirectory(initialdir=self.root.root.config.options["path"])

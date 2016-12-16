@@ -7,7 +7,7 @@ import time
 
 class Item:
 	def __init__(self, url, title):
-		self.url = url
+		self.url   = url
 		self.title = title
 
 class App:
@@ -21,10 +21,11 @@ class App:
 			"opus",
 			"wav"
 		]
-		self.config = Config()
+		self.config        = Config()
 		self.defaultFormat = self.config.options["format"]
-		self.list = []
-		self.mainwindow = Window(self)
+		self.list          = []
+		self.mainwindow    = Window(self)
+		self.about()
 		self.run()
 
 	def showAddLink(self):
@@ -63,3 +64,7 @@ class App:
 
 	def inputNewLink(self):
 		popup = InputBox(self)
+
+	def about(self):
+		AboutWindow(self)
+		print "dsds"

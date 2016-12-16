@@ -10,9 +10,10 @@ class Window(Tk):
 	def __init__(self, root, *args, **kwargs):
 		self.root = root
 		Tk.__init__(self, *args, **kwargs)
-		icon = PhotoImage(file="icons/yt.png")
-		self.tk.call("wm", "iconphoto", self._w, icon)
+		icon        = PhotoImage(file="icons/yt.png")
 		self.radios = []
+		self.tk.call("wm", "iconphoto", self._w, icon)
+		self.tk.call("wm", "title", self._w, "Youtube-DL")
 		self.title("YouTube-DL")
 		self.setup()
 
@@ -24,17 +25,17 @@ class Window(Tk):
 		self.grid_columnconfigure(1, weight=0)
 		self.grid_rowconfigure(0, weight=2)
 
-		self.menu = MainMenu(self)
-		self.buttons = Frame(self, padx=15)
+		self.menu     = MainMenu(self)
+		self.buttons  = Frame(self, padx=15)
 
-		self.add = UIButton(self.buttons, text="add Link", command=self.root.showAddLink)
-		self.delete = Button(self.buttons, text="Delete", command=self.deleteItem)
-		self.start = Button(self.buttons, text="Start Download", command=self.startDownload)
+		self.add      = UIButton(self.buttons, text="add Link", command=self.root.showAddLink)
+		self.delete   = Button(self.buttons, text="Delete", command=self.deleteItem)
+		self.start    = Button(self.buttons, text="Start Download", command=self.startDownload)
 
 		self.progress = ttk.Progressbar(self)
-		self.progress.grid(column=0, row=1, columnspan=2, sticky=N+S+E+W, pady=5)
+		self.list     = Listbox(self,selectmode=MULTIPLE)
 
-		self.list = Listbox(self,selectmode=MULTIPLE)
+		self.progress.grid(column=0, row=1, columnspan=2, sticky=N+S+E+W, pady=5)
 
 		self.list.grid(row=0, column=0, sticky=N+S+E+W)
 		self.buttons.grid(row=0, column=1, sticky=N+S+E+W)
@@ -52,7 +53,7 @@ class Window(Tk):
 			b.pack(anchor=W)
 
 	def setOutputFormat(self, format):
-		self.root.defaultFormat = format
+		self.root.defaultFormat            = format
 		self.root.config.options["format"] = format
 		self.root.config.save()
 
@@ -97,16 +98,17 @@ class InputBox(Toplevel):
 
 	def setup(self):
 		self.configure(padx=5, pady=5)
-		self.label = Label(self, text="neuen Link einfügen:")
-		self.title("Link hinzufügen")
-		self.input = Entry(self, width=50)
-		self.ok = Button(self, command=self.submit, text="OK")
+		self.title("add Link")
+		self.label  = Label(self, text="insert a new Link:")
+		self.input  = Entry(self, width=50)
+		self.ok     = Button(self, command=self.submit, text="OK")
 		self.cancel = Button(self, command=self.cancelAction, text="Cancel")
 
 		self.label.grid(column=0, row=0, columnspan=3, sticky=W, pady=5)
 		self.input.grid(column=0, row=1, columnspan=3)
 		self.ok.grid(column=0, row=3, sticky=W+E, pady=(20, 0))
 		self.cancel.grid(column=2, row=3, sticky=W+E, pady=(20, 0))
+
 		self.input.focus()
 
 	def close(self):
@@ -122,3 +124,25 @@ class InputBox(Toplevel):
 
 	def cancelAction(self):
 		self.close()
+
+class AboutWindow(Toplevel):
+	IsVisible = False
+	AboutText = "YouTube-DL – Graphical Userinterface\n\n" \
+				"(C) 2016, Massive Dynamic by Michael Ochmann"
+	def __init__(self, root):
+		self.root = root
+		Toplevel.__init__(self, width=300, height=100)
+		self.setup()
+		InputBox.IsVisible = True
+
+	def setup(self):
+		self.configure(padx=5, pady=5,)
+		self.title("About Youtube-DL")
+		self.icon          = PhotoImage(file="icons/logo_mike-ochmann.de.png")
+		self.label    = Label(self, text=AboutWindow.AboutText)
+		self.branding = Label(self, image=self.icon)
+		self.ok       = Button(self, text="OK", command=self.destroy)
+
+		self.label.grid(column=0, row=0, columnspan=3, pady=(40,0), padx=20, sticky=W)
+		self.branding.grid(column=1, row=1, sticky=W+E, pady=30)
+		self.ok.grid(column=1, row=2, sticky=W+E, pady=(0,10))
