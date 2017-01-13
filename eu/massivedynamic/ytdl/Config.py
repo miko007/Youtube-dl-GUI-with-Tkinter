@@ -13,6 +13,10 @@ class Config():
 				self.options[data[0]] = data[1].strip()
 
 	def save(self):
-		filepointer = open(Config.File, "rw+")
+		lines = []
 		for option in self.options:
-			filepointer.write(option + ':' + self.options[option] + '\n')
+			lines.append(option + ':' + self.options[option] + '\n')
+		with open(Config.File, "rw+") as filepointer:
+			filepointer.truncate()
+			filepointer.writelines(lines)
+			filepointer.close()

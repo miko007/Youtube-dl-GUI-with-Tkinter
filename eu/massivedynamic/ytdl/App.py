@@ -25,7 +25,6 @@ class App:
 		self.defaultFormat = self.config.options["format"]
 		self.list          = []
 		self.mainwindow    = Window(self)
-		self.about()
 		self.run()
 
 	def showAddLink(self):
@@ -53,7 +52,7 @@ class App:
 		amount = len(self.list)
 		i = 0
 		for item in self.list:
-			call(["youtube-dl", "--extract-audio", "--audio-format", self.defaultFormat, item.url, "-o", self.config.options["path"] + "/%(title)s.%(ext)s"])
+			response = call(["youtube-dl", "--extract-audio", "--audio-format", self.defaultFormat, item.url, "-o", self.config.options["path"] + "/%(title)s.%(ext)s"])
 			i = i + 1
 			self.mainwindow.setProgress(i * 100 / amount)
 			time.sleep(.300)
@@ -67,4 +66,3 @@ class App:
 
 	def about(self):
 		AboutWindow(self)
-		print "dsds"
