@@ -1,0 +1,6 @@
+#!/bin/bash
+scriptDir=$(dirname -- "$(readlink -e -- "$BASH_SOURCE")")
+
+cd "$scriptDir"
+
+python yt-dl.py "$@"
