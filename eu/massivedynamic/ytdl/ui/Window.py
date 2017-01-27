@@ -40,6 +40,9 @@ class Window(Tk):
 		self.list.grid(row=0, column=0, sticky=N+S+E+W)
 		self.buttons.grid(row=0, column=1, sticky=N+S+E+W)
 
+		self.coverImage = PhotoImage(file="https://img.youtube.com/vi/_zp2Etvvlrk/3.jpg")
+		self.cover  = Label(self.buttons, image=self.coverImage)
+
 		self.add.pack(fill=BOTH)
 		self.delete.pack(fill=BOTH)
 		self.start.pack(fill=BOTH, pady=(0,20))
@@ -51,6 +54,8 @@ class Window(Tk):
 			if (option == self.root.defaultFormat):
 				b.select()
 			b.pack(anchor=W)
+
+		self.cover.pack(fill=BOTH)
 
 	def setOutputFormat(self, format):
 		self.root.defaultFormat            = format
