@@ -2,8 +2,10 @@ from eu.massivedynamic.ytdl.ui.Window import *
 from eu.massivedynamic.ytdl.yt.Video import Title
 from eu.massivedynamic.ytdl.Config import Config
 from subprocess import call
+import subprocess
 import re
 import time
+import httplib
 
 class Item:
 	def __init__(self, url, title):
@@ -11,6 +13,8 @@ class Item:
 		self.title = title
 
 class App:
+        VERSION_DOMAIN = "rg3.github.io"
+        VERSION_PATH   = "/youtube-dl/update/LATEST_VERSION"
 	def __init__(self):
 		self.outputFormats = [
 			"best",
@@ -25,7 +29,19 @@ class App:
 		self.defaultFormat = self.config.options["format"]
 		self.list          = []
 		self.mainwindow    = Window(self)
+                self.checkForUpdates()
 		self.run()
+
+        def checkForUpdates(self):
+            command               = subprocess.Popen("youtube-dl --version", shell=True, stdout = subprocess.PIPE)
+            currentVersion, error = command.communicate()
+            currentVersion        = currentVersion.strip()
+            request               = httplib.HTTPSConnection(App.VERSION_DOMAIN)
+            request.request("GET", App.VERSION_PATH)
+            response              = request.getresponse()
+            newVersion            = response.read()
+            if (not newVersion == currentVersion):
+                call(["youtube-dl", "-U"])
 
 	def showAddLink(self):
 		if (not InputBox.isVisible):
